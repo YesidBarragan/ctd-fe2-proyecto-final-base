@@ -18,6 +18,8 @@
     "radix": ["error", "as-needed"],
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
 		"import/no-unresolved": "off",
+    "no-unused-vars": "warn",
+    "no-useless-catch": "warn",
 		"import/extensions": ["error", "never", { "svg": "always" }],
 		"react/react-in-jsx-scope": "off"
   }

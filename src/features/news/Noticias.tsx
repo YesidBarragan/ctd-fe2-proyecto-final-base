@@ -20,6 +20,7 @@ import {
   BotonSuscribir,
   CotenedorTexto,
 } from "./styled";
+import { minutosTranscurridos, tituloMayuscula } from "../../utils";
 
 export interface INoticiasNormalizadas {
   id: number;
@@ -31,7 +32,7 @@ export interface INoticiasNormalizadas {
   descripcionCorta?: string;
 }
 
-const Noticias = () => {
+function Noticias() {
   const [noticias, setNoticias] = useState<INoticiasNormalizadas[]>([]);
   const [modal, setModal] = useState<INoticiasNormalizadas | null>(null);
 
@@ -39,30 +40,17 @@ const Noticias = () => {
     const obtenerInformacion = async () => {
       const respuesta = await obtenerNoticias();
 
-      const data = respuesta.map((n) => {
-        const titulo = n.titulo
-          .split(" ")
-          .map((str) => {
-            return str.charAt(0).toUpperCase() + str.slice(1);
-          })
-          .join(" ");
-
-        const ahora = new Date();
-        const minutosTranscurridos = Math.floor(
-          (ahora.getTime() - n.fecha.getTime()) / 60000
-        );
-
-        return {
+      const data = respuesta.map((n) =>
+        ({
           id: n.id,
-          titulo,
+          titulo: tituloMayuscula(n),
           descripcion: n.descripcion,
-          fecha: `Hace ${minutosTranscurridos} minutos`,
+          fecha: `Hace ${minutosTranscurridos(n)} minutos`,
           esPremium: n.esPremium,
           imagen: n.imagen,
           descripcionCorta: n.descripcion.substring(0, 100),
-        };
-      });
-
+        })
+      );
       setNoticias(data);
     };
 
@@ -84,7 +72,7 @@ const Noticias = () => {
             <BotonLectura onClick={() => setModal(n)}>Ver más</BotonLectura>
           </TarjetaNoticia>
         ))}
-        {modal ? (
+        {modal && (
           modal.esPremium ? (
             <ContenedorModal>
               <TarjetaModal>
@@ -125,7 +113,7 @@ const Noticias = () => {
               </TarjetaModal>
             </ContenedorModal>
           )
-        ) : null}
+        )}
       </ListaNoticias>
     </ContenedorNoticias>
   );

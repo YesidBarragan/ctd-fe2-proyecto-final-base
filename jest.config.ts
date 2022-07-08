@@ -10,7 +10,9 @@ module.exports = {
       verbose: true,
     }
   ],
+  collectCoverage: true,
   collectCoverageFrom: [
+    'src/features/quote',
     '**/*.test.tsx',
     '!src/mocks',
     '!test-utils.tsx'

@@ -1,7 +1,7 @@
-import { renderHook, waitFor, screen, fireEvent } from "@testing-library/react";
+import { renderHook, waitFor, screen, fireEvent, render } from "@testing-library/react";
 import { setupServer } from "msw/node";
 import Cita from "./Cita";
-import obtenerCita from "./citaAPI";
+// import obtenerCita from "./citaAPI";
 import generateHandlers  from "../../mocks/cita";
 import { render as customRender } from "../../test-utils";
 
@@ -16,7 +16,8 @@ describe('Cita component', () => {
 
   it('should render correctly', () => {
     customRender(<Cita/>);
-    expect(screen.getByPlaceholderText('Ingresa el nombre del autor')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Ingresa el nombre del autor'));
+    
   })
 
   it('should change the value of the input', () => {

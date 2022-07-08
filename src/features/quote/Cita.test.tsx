@@ -1,12 +1,10 @@
-import { renderHook, waitFor, screen, fireEvent, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { setupServer } from "msw/node";
+import { handlers }  from "../../mocks/cita";
+import { render, screen, fireEvent } from "../../test-utils";
 import Cita from "./Cita";
-// import obtenerCita from "./citaAPI";
-import generateHandlers  from "../../mocks/cita";
-import { render as customRender } from "../../test-utils";
 
-const { handlers, data } = generateHandlers();
-export const server = setupServer(...handlers);
+const server = setupServer(...handlers);
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
@@ -15,39 +13,49 @@ afterAll(() => server.close());
 describe('Cita component', () => {
 
   it('should render correctly', () => {
-    customRender(<Cita/>);
+    const { asFragment } = render(<Cita/>);
+    expect(asFragment()).toMatchSnapshot();
     expect(screen.getByPlaceholderText('Ingresa el nombre del autor'));
-    
   })
 
   it('should change the value of the input', () => {
-    customRender(<Cita/>)
+    render(<Cita/>)
     const searchInput = screen.getByPlaceholderText('Ingresa el nombre del autor');
     fireEvent.change(searchInput, { target: { value: 'Homer' } });
     expect(searchInput as HTMLInputElement).toHaveValue('Homer');
   })
 
-  it('should render a quote', async () => {
-    customRender(<Cita/>)
-    const quoteMessage = screen.getByText('No se encontro ninguna cita');
-    const searchButton = screen.getByText('Obtener cita aleatoria');
-    fireEvent.click(searchButton);
-    expect(quoteMessage).toHaveTextContent('CARGANDO...');
-  })
+  it('should render a random quote', async () => {
+		render(<Cita />);
+		const searchButton = screen.getByText('Obtener cita aleatoria');
+		await userEvent.click(searchButton);
+		expect(await screen.findByText('Bart Simpson')).toBeInTheDocument()
+	})
+
+  it('should render a character quote', async () => {
+		render(<Cita />);
+		const searchInput = screen.getByPlaceholderText("Ingresa el nombre del autor")
+		await userEvent.type(searchInput, 'Homer')
+		const searchButton = screen.getByText('Obtener Cita');
+		await userEvent.click(searchButton);
+		expect(await screen.findByText('Homer Simpson')).toBeInTheDocument()
+	})
+
+  it('should render a error message', async () => {
+		render(<Cita />);
+		const searchInput = screen.getByPlaceholderText("Ingresa el nombre del autor")
+		await userEvent.type(searchInput, '1')
+		const searchButton = screen.getByText('Obtener Cita');
+		await userEvent.click(searchButton);
+		expect(await screen.findByText('Por favor ingrese un nombre válido')).toBeInTheDocument()
+	})
 
   it('should clear the input', () => {
-    customRender(<Cita/>)
+    render(<Cita/>)
     const searchInput = screen.getByPlaceholderText('Ingresa el nombre del autor');
     fireEvent.change(searchInput, { target: { value: 'Homer' } });
     const clearButton = screen.getByText('Borrar');
     fireEvent.click(clearButton);
     expect(searchInput as HTMLInputElement).toHaveValue('');
   })
-
-  // xit('api', async () => {
-  //   const hook = renderHook(() => obtenerCita());
-  //   await waitFor(() => {
-  //     expect(hook.result.current.data).toEqual(data);
-  //   })
-  // })
 })

@@ -14,6 +14,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/features/quote',
     '**/*.test.tsx',
+    '!src/features/news',
     '!src/mocks',
     '!test-utils.tsx'
   ],

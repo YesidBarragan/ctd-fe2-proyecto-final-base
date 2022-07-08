@@ -20,7 +20,7 @@ import {
   BotonSuscribir,
   CotenedorTexto,
 } from "./styled";
-import { minutosTranscurridos, tituloMayuscula } from "../../utils";
+import { minutosTranscurridos, tituloMayuscula } from "./utils";
 
 export interface INoticiasNormalizadas {
   id: number;

@@ -1,3 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Cita component should render correctly 1`] = `<DocumentFragment />`;
+exports[`Cita component should render correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-bczRLJ ccfNVZ"
+  >
+    <p
+      class="sc-gsnTZi lonubk"
+    >
+      No se encontro ninguna cita
+    </p>
+    <p
+      class="sc-dkzDqf cfsdtw"
+    />
+    <input
+      aria-label="Author Cita"
+      class="sc-hKMtZM ewBjec"
+      placeholder="Ingresa el nombre del autor"
+      value=""
+    />
+    <button
+      aria-label="Obtener cita aleatoria"
+      class="sc-eCYdqJ jqdBt"
+    >
+      Obtener cita aleatoria
+    </button>
+    <button
+      aria-label="Borrar"
+      class="sc-eCYdqJ LyeJx"
+    >
+      Borrar
+    </button>
+  </div>
+</DocumentFragment>
+`;

@@ -16,15 +16,7 @@ const initialState: EstadoCita = {
 
 export const obtenerCitaAsync = createAsyncThunk(
   "cita/obtenerCita",
-  async (personaje: string) => {
-    try {
-      const cita = await obtenerCita(personaje);
-
-      return cita;
-    } catch (err) {
-      throw err;
-    }
-  }
+  async (personaje: string) => obtenerCita(personaje)
 );
 
 export const citaSlice = createSlice({

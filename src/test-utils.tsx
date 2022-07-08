@@ -28,7 +28,7 @@ const customRender = (
     children: React.ReactNode;
   }> = ({ children }) => <Provider store={store}>{children}</Provider>;
 
-  render(ui, {
+  return render(ui, {
     wrapper: Wrapper,
     ...renderOptions,
   });

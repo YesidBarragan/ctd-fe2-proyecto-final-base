@@ -1,13 +1,8 @@
-import { useEffect, useState } from "react";
-import { SuscribeImage, CloseButton as Close } from "../../assets";
-import { obtenerNoticias } from "./fakeRest";
+import { useEffect, useState } from 'react';
+import { SuscribeImage } from '../../assets';
+import { obtenerNoticias } from './fakeRest';
+import Modal from './Modal';
 import {
-  CloseButton,
-  TarjetaModal,
-  ContenedorModal,
-  DescripcionModal,
-  ImagenModal,
-  TituloModal,
   TarjetaNoticia,
   FechaTarjetaNoticia,
   DescripcionTarjetaNoticia,
@@ -18,9 +13,8 @@ import {
   TituloNoticias,
   BotonLectura,
   BotonSuscribir,
-  CotenedorTexto,
-} from "./styled";
-import { minutosTranscurridos, tituloMayuscula } from "./utils";
+} from './styled';
+import { minutosTranscurridos, tituloMayuscula } from './utils';
 
 export interface INoticiasNormalizadas {
   id: number;
@@ -40,17 +34,15 @@ function Noticias() {
     const obtenerInformacion = async () => {
       const respuesta = await obtenerNoticias();
 
-      const data = respuesta.map((n) =>
-        ({
-          id: n.id,
-          titulo: tituloMayuscula(n),
-          descripcion: n.descripcion,
-          fecha: `Hace ${minutosTranscurridos(n)} minutos`,
-          esPremium: n.esPremium,
-          imagen: n.imagen,
-          descripcionCorta: n.descripcion.substring(0, 100),
-        })
-      );
+      const data = respuesta.map((n) => ({
+        id: n.id,
+        titulo: tituloMayuscula(n),
+        descripcion: n.descripcion,
+        fecha: `Hace ${minutosTranscurridos(n)} minutos`,
+        esPremium: n.esPremium,
+        imagen: n.imagen,
+        descripcionCorta: n.descripcion.substring(0, 100),
+      }));
       setNoticias(data);
     };
 
@@ -66,57 +58,37 @@ function Noticias() {
             <ImagenTarjetaNoticia src={n.imagen} />
             <TituloTarjetaNoticia>{n.titulo}</TituloTarjetaNoticia>
             <FechaTarjetaNoticia>{n.fecha}</FechaTarjetaNoticia>
-            <DescripcionTarjetaNoticia>
-              {n.descripcionCorta}
-            </DescripcionTarjetaNoticia>
+            <DescripcionTarjetaNoticia>{n.descripcionCorta}</DescripcionTarjetaNoticia>
             <BotonLectura onClick={() => setModal(n)}>Ver más</BotonLectura>
           </TarjetaNoticia>
         ))}
         {modal && (
-          modal.esPremium ? (
-            <ContenedorModal>
-              <TarjetaModal>
-                <CloseButton onClick={() => setModal(null)}>
-                  <img src={Close} alt="close-button" />
-                </CloseButton>
-                <ImagenModal src={SuscribeImage} alt="mr-burns-excelent" />
-                <CotenedorTexto>
-                  <TituloModal>Suscríbete a nuestro Newsletter</TituloModal>
-                  <DescripcionModal>
-                    Suscríbete a nuestro newsletter y recibe noticias de
-                    nuestros personajes favoritos.
-                  </DescripcionModal>
-                  <BotonSuscribir
-                    onClick={() =>
-                      setTimeout(() => {
-                        alert("Suscripto!");
-                        setModal(null);
-                      }, 1000)
-                    }
-                  >
-                    Suscríbete
-                  </BotonSuscribir>
-                </CotenedorTexto>
-              </TarjetaModal>
-            </ContenedorModal>
-          ) : (
-            <ContenedorModal>
-              <TarjetaModal>
-                <CloseButton onClick={() => setModal(null)}>
-                  <img src={Close} alt="close-button" />
-                </CloseButton>
-                <ImagenModal src={modal.imagen} alt="news-image" />
-                <CotenedorTexto>
-                  <TituloModal>{modal.titulo}</TituloModal>
-                  <DescripcionModal>{modal.descripcion}</DescripcionModal>
-                </CotenedorTexto>
-              </TarjetaModal>
-            </ContenedorModal>
-          )
+          <Modal
+            imagen={modal.esPremium ? SuscribeImage : modal.imagen}
+            titulo={modal.esPremium ? 'Suscríbete a nuestro Newsletter' : modal.titulo}
+            descripcion={
+              modal.esPremium
+                ? 'Suscríbete a nuestro newsletter y recibe noticias de nuestros personajes favoritos.'
+                : modal.descripcion
+            }
+            altImagen="mr-burns-excelent"
+            setModal={setModal}>
+            {modal.esPremium && (
+              <BotonSuscribir
+                onClick={() =>
+                  setTimeout(() => {
+                    alert('Suscripto!');
+                    setModal(null);
+                  }, 1000)
+                }>
+                Suscríbete
+              </BotonSuscribir>
+            )}
+          </Modal>
         )}
       </ListaNoticias>
     </ContenedorNoticias>
   );
-};
+}
 
 export default Noticias;

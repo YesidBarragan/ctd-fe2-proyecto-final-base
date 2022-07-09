@@ -13,6 +13,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     'src/features/quote',
+    'src/features/quote/citaSlice.ts',
     '**/*.test.tsx',
     '!src/features/news',
     '!src/mocks',

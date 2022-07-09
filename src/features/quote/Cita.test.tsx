@@ -16,6 +16,7 @@ describe('Cita component', () => {
     const { asFragment } = render(<Cita/>);
     expect(asFragment()).toMatchSnapshot();
     expect(screen.getByPlaceholderText('Ingresa el nombre del autor'));
+    
   })
 
   it('should change the value of the input', () => {
@@ -23,6 +24,7 @@ describe('Cita component', () => {
     const searchInput = screen.getByPlaceholderText('Ingresa el nombre del autor');
     fireEvent.change(searchInput, { target: { value: 'Homer' } });
     expect(searchInput as HTMLInputElement).toHaveValue('Homer');
+    
   })
 
   it('should render a random quote', async () => {
